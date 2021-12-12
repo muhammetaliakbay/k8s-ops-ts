@@ -1,0 +1,20 @@
+{
+    "name": "k8s-operator",
+    "version": "0.1.0",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/muhammetaliakbay/k8s-ops-ts"
+    },
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "bin": "dist/main.js",
+    "scripts": {
+        "build": "rm -rf dist && tsc && chmod +x dist/main.js"
+    },
+    "dependencies": {
+    },
+    "devDependencies": {
+        "typescript": "^4.5.3",
+        "@types/node": "^16.11.12"
+    }
+}
