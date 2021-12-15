@@ -1,6 +1,6 @@
 {
     "name": "k8s-operator",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "repository": {
         "type": "git",
         "url": "https://github.com/muhammetaliakbay/k8s-ops-ts"
@@ -15,6 +15,7 @@
         "build": "rm -rf dist && tsc && chmod +x dist/main.js"
     },
     "dependencies": {
+        "@kubernetes/client-node": "^0.16.1"
     },
     "devDependencies": {
         "typescript": "^4.5.3",

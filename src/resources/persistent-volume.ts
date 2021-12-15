@@ -1,3 +1,5 @@
+import { CoreV1Api } from "@kubernetes/client-node";
+import { ResourceOperator } from "../resource-operator";
 import { KObject } from "./object";
 import { Resource } from "./resource";
 
@@ -58,5 +60,37 @@ export namespace PersistentVolume {
     export enum VolumeMode {
         Filesystem = "Filesystem",
         Block = "Block",
+    }
+
+    export const Operator: ResourceOperator<PersistentVolume, CoreV1Api> = {
+        apiVersion: "v1",
+        kind: "PersistentVolume",
+        apiType: CoreV1Api,
+        async list(api: CoreV1Api, labelSelector: string) {
+            const result = await api.listPersistentVolume(
+                undefined,
+                undefined,
+                undefined,
+                undefined,
+                labelSelector,
+            );
+            return result.body.items as PersistentVolume[];
+        },
+        async delete(api: CoreV1Api, object: PersistentVolume) {
+            await api.deletePersistentVolume(
+                object.metadata.name,
+            )
+        },
+        async create(api: CoreV1Api, object: PersistentVolume) {
+            await api.createPersistentVolume(
+                object,
+            )
+        },
+        async patch(api: CoreV1Api, object: PersistentVolume) {
+            await api.patchPersistentVolume(
+                object.metadata.name,
+                object,
+            )
+        }
     }
 }

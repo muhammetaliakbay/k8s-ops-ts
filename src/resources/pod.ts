@@ -37,7 +37,7 @@ export namespace Pod {
         volumeMounts?: Container.VolumeMount[]
     }
     
-    export namespace Container {
+    export namespace Container {
         export interface VolumeMount {
             mountPath: string
             name: string

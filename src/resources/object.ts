@@ -18,4 +18,7 @@ export namespace KObject {
         labels?: Labels
         annotations?: Annotations
     }
+
+    export type ApiVersion<T extends KObject> = T extends {apiVersion: infer V} ? V : never
+    export type Kind<T extends KObject> = T extends {kind: infer K} ? K : never
 }
