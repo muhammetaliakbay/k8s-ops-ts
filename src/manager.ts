@@ -1,39 +1,9 @@
 import { ApiType, KubeConfig, KubernetesObjectApi } from "@kubernetes/client-node"
 import { ApiConstructor, ResourceOperator } from "./resource-operator"
-import { 
-    KObject,
-    ConfigMap,
-    Deployment,
-    Endpoints,
-    Ingress,
-    ManagedCertificate,
-    PersistentVolume,
-    PersistentVolumeClaim,
-    Secret,
-    Service,
-} from "./resources"
+import { KObject } from "./resources"
 
 const kc = new KubeConfig()
 kc.loadFromDefault()
-
-const resourceOperators: ResourceOperator<KObject, ApiType>[] = [
-    ConfigMap.Operator,
-    Deployment.Operator,
-    Endpoints.Operator,
-    Ingress.Operator,
-    ManagedCertificate.Operator,
-    PersistentVolumeClaim.Operator,
-    PersistentVolume.Operator,
-    Secret.Operator,
-    Service.Operator,
-]
-
-type OperatorMap = Record<string, Record<string, ResourceOperator<KObject, ApiType>>>
-
-const operatorMap: OperatorMap = {}
-for (const operator of resourceOperators) {
-    (operatorMap[operator.apiVersion] ??= {})[operator.kind] = operator
-}
 
 function findResource(resources: KObject[], subject: KObject) {
     for (const resource of resources) {
@@ -70,6 +40,7 @@ function override(resource: KObject, id: string): KObject {
 export class Manager {
     private constructor(
         readonly kubeConfig: KubeConfig,
+        readonly operators: ResourceOperator<KObject, ApiType>[],
     ) {
     }
 
@@ -85,16 +56,21 @@ export class Manager {
         return instance as A
     }
 
-    static fromKubeConfig(kubeConfig: KubeConfig) {
-        return new Manager(kubeConfig)
+    static fromKubeConfig(
+        kubeConfig: KubeConfig,
+        operators: ResourceOperator<KObject, ApiType>[],
+    ) {
+        return new Manager(kubeConfig, operators)
     }
 
     private findOperator<O extends KObject>(object: O): ResourceOperator<O, ApiType> {
-        const opearator = operatorMap[object.apiVersion]?.[object.kind]
-        if (opearator == null) {
-            throw new Error(`No operator is implemented for the object kind ${object.apiVersion} / ${object.kind}`)
+        const operator = this.operators.find(
+            operator => operator.apiVersion === object.apiVersion && operator.kind === object.kind
+        )
+        if (operator == null) {
+            throw new Error(`No operator is provided for the object kind ${object.apiVersion} / ${object.kind}`)
         }
-        return opearator as ResourceOperator<O, ApiType>
+        return operator as ResourceOperator<O, ApiType>
     }
 
     private async list<O extends KObject>(id: string, operator: ResourceOperator<O, ApiType>) {
@@ -128,7 +104,7 @@ export class Manager {
     
     private async listResources(id: string) {
         const objects: KObject[] = []
-        for (const operator of resourceOperators) {
+        for (const operator of this.operators) {
             const list = await this.list(id, operator)
             objects.push(...list)
         }
