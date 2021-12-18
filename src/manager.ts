@@ -1,6 +1,17 @@
 import { ApiType, KubeConfig, KubernetesObjectApi } from "@kubernetes/client-node"
 import { ApiConstructor, ResourceOperator } from "./resource-operator"
-import { KObject, ConfigMap, Deployment, Endpoints, Ingress, PersistentVolume, PersistentVolumeClaim, Secret, Service } from "./resources"
+import { 
+    KObject,
+    ConfigMap,
+    Deployment,
+    Endpoints,
+    Ingress,
+    ManagedCertificate,
+    PersistentVolume,
+    PersistentVolumeClaim,
+    Secret,
+    Service,
+} from "./resources"
 
 const kc = new KubeConfig()
 kc.loadFromDefault()
@@ -10,6 +21,7 @@ const resourceOperators: ResourceOperator<KObject, ApiType>[] = [
     Deployment.Operator,
     Endpoints.Operator,
     Ingress.Operator,
+    ManagedCertificate.Operator,
     PersistentVolumeClaim.Operator,
     PersistentVolume.Operator,
     Secret.Operator,
@@ -105,10 +117,14 @@ export class Manager {
         return operator.create(this.useApi(operator.apiType), object)
     }
 
-    /*private async patch<O extends KObject>(object: O, operator?: ResourceOperator<O, ApiType>) {
+    private async patch<O extends KObject>(object: O, operator?: ResourceOperator<O, ApiType>) {
         operator ??= this.findOperator(object)
-        return operator.patch(this.useApi(operator.apiType), object)
-    }*/
+        if ('patch' in operator) {
+            return operator.patch(this.useApi(operator.apiType), object)
+        } else {
+            return this.objectApi.patch(object)
+        }
+    }
     
     private async listResources(id: string) {
         const objects: KObject[] = []
@@ -138,8 +154,7 @@ export class Manager {
             resource => findResource(resources, resource) == null,
         )
         for (const resourceToPatch of resourcesToPatch) {
-            // await this.patch(override(resourceToPatch, id))
-            await this.objectApi.patch(resourceToPatch)
+            await this.patch(override(resourceToPatch, id))
         }
         for (const resourceToCreate of resourcesToCreate) {
             await this.create(override(resourceToCreate, id))

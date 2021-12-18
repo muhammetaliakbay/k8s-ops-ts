@@ -41,12 +41,12 @@ export namespace Deployment {
                 object,
             )
         },
-        async patch(api: AppsV1Api, object: Deployment) {
-            await api.patchNamespacedDeployment(
-                object.metadata.name,
-                object.metadata.namespace,
-                object,
-            )
-        }
+        // async patch(api: AppsV1Api, object: Deployment) {
+        //     await api.patchNamespacedDeployment(
+        //         object.metadata.name,
+        //         object.metadata.namespace,
+        //         object,
+        //     )
+        // }
     }
 }

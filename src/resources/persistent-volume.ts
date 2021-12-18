@@ -86,11 +86,11 @@ export namespace PersistentVolume {
                 object,
             )
         },
-        async patch(api: CoreV1Api, object: PersistentVolume) {
-            await api.patchPersistentVolume(
-                object.metadata.name,
-                object,
-            )
-        }
+        // async patch(api: CoreV1Api, object: PersistentVolume) {
+        //     await api.patchPersistentVolume(
+        //         object.metadata.name,
+        //         object,
+        //     )
+        // }
     }
 }

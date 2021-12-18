@@ -58,12 +58,12 @@ export namespace Endpoints {
                 object,
             )
         },
-        async patch(api: CoreV1Api, object: Endpoints) {
-            await api.patchNamespacedConfigMap(
-                object.metadata.name,
-                object.metadata.namespace,
-                object,
-            )
-        }
+        // async patch(api: CoreV1Api, object: Endpoints) {
+        //     await api.patchNamespacedConfigMap(
+        //         object.metadata.name,
+        //         object.metadata.namespace,
+        //         object,
+        //     )
+        // }
     }
 }

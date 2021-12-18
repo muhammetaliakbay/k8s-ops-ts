@@ -37,12 +37,12 @@ export namespace ConfigMap {
                 object,
             )
         },
-        async patch(api: CoreV1Api, object: ConfigMap) {
-            await api.patchNamespacedConfigMap(
-                object.metadata.name,
-                object.metadata.namespace,
-                object,
-            )
-        }
+        // async patch(api: CoreV1Api, object: ConfigMap) {
+        //     await api.patchNamespacedConfigMap(
+        //         object.metadata.name,
+        //         object.metadata.namespace,
+        //         object,
+        //     )
+        // }
     }
 }

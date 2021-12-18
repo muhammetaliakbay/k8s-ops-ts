@@ -69,12 +69,12 @@ export namespace Service {
                 object,
             )
         },
-        async patch(api: CoreV1Api, object: Service) {
-            await api.patchNamespacedService(
-                object.metadata.name,
-                object.metadata.namespace,
-                object,
-            )
-        }
+        // async patch(api: CoreV1Api, object: Service) {
+        //     await api.patchNamespacedService(
+        //         object.metadata.name,
+        //         object.metadata.namespace,
+        //         object,
+        //     )
+        // }
     }
 }

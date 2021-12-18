@@ -49,12 +49,12 @@ export namespace Secret {
                 object,
             )
         },
-        async patch(api: CoreV1Api, object: Secret) {
-            await api.patchNamespacedSecret(
-                object.metadata.name,
-                object.metadata.namespace,
-                object,
-            )
-        }
+        // async patch(api: CoreV1Api, object: Secret) {
+        //     await api.patchNamespacedSecret(
+        //         object.metadata.name,
+        //         object.metadata.namespace,
+        //         object,
+        //     )
+        // }
     }
 }

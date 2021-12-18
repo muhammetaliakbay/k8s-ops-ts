@@ -11,5 +11,5 @@ export interface ResourceOperator<T extends KObject, API extends ApiType> {
     list(api: API, labelSelector: string): Promise<T[]>;
     delete(api: API, object: T): Promise<void>;
     create(api: API, object: T): Promise<void>;
-    patch(api: API, object: T): Promise<void>;
+    patch?(api: API, object: T): Promise<void>;
 }

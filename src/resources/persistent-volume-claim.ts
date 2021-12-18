@@ -56,12 +56,12 @@ export namespace PersistentVolumeClaim {
                 object,
             )
         },
-        async patch(api: CoreV1Api, object: PersistentVolumeClaim) {
-            await api.patchNamespacedPersistentVolumeClaim(
-                object.metadata.name,
-                object.metadata.namespace,
-                object,
-            )
-        }
+        // async patch(api: CoreV1Api, object: PersistentVolumeClaim) {
+        //     await api.patchNamespacedPersistentVolumeClaim(
+        //         object.metadata.name,
+        //         object.metadata.namespace,
+        //         object,
+        //     )
+        // }
     }
 }

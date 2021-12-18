@@ -81,12 +81,12 @@ export namespace Ingress {
                 object,
             )
         },
-        async patch(api: NetworkingV1Api, object: Ingress) {
-            await api.patchNamespacedIngress(
-                object.metadata.name,
-                object.metadata.namespace,
-                object,
-            )
-        }
+        // async patch(api: NetworkingV1Api, object: Ingress) {
+        //     await api.patchNamespacedIngress(
+        //         object.metadata.name,
+        //         object.metadata.namespace,
+        //         object,
+        //     )
+        // }
     }
 }
